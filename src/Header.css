@@ -1,5 +1,12 @@
 .header {
+    position: sticky;
+    top: 0;
     display: flex;
+    justify-content: space-evenly;
+    border-bottom: 0.1px solid lightgray;
+    padding-top: 10px;
+    padding-bottom:10px ;
+    z-index: 999;
 
 }
 .header-left{
@@ -23,6 +30,8 @@
 }
 .header-search > input {
     outline: none;
+    border: 0px;
+    background-color: #eef3f8;
 }
 .header-right{
     display: flex;
