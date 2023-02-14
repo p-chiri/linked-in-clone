@@ -8,7 +8,7 @@ import EventNoteIcon from '@material-ui/icons/EventNote';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay'
 import Post from './Post';
 import { db } from './firebase';
-
+import firebase from 'firebase';
 
 function Feed() {
     const [input, setInput] = useState('');
@@ -16,7 +16,7 @@ function Feed() {
 
 
     useEffect(() => {
-        db.collection("posts").onSnapshot(snapshot => (
+        db.collection("posts").orderBy("timestamp","desc" ).onSnapshot(snapshot => (
             setPosts(snapshot.docs.map(doc =>(
                 {
                 id: doc.id,
@@ -34,8 +34,11 @@ function Feed() {
             description:"please work",
             message: input,
             photoUrl: '',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         
-        })
+        });
+
+        setInput("");
     };
 
   return (
@@ -56,10 +59,16 @@ function Feed() {
             </div>
         </div>
         {/*posts */}
-        {posts.map((post) => {
-            <Post />
-        })}
-        <Post name='Arnold mutai' description='this is a test' message='this is awesome work' />
+        {posts.map(({ id, data: {name, description, message,
+         photoUrl} }) => (
+            <Post
+            key={id}
+            name={name}
+            description={description}
+            message={message}
+            photoUrl={photoUrl}
+            />
+        ))}
     </div>
   )
 }
